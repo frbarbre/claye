@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { anthropic, createAnthropic } from "@ai-sdk/anthropic";
 import { generateText } from "ai";
 import { exec } from "child_process";
@@ -5,6 +7,8 @@ import { cli, command } from "cleye";
 import dotenv from "dotenv";
 import { promisify } from "util";
 import * as readline from "readline";
+import { homedir } from "os";
+import { join } from "path";
 
 const models = [
   "claude-3-5-haiku-latest",
@@ -28,8 +32,9 @@ function isModel(model: Models) {
 
 // Promisify exec for async/await usage
 const execAsync = promisify(exec);
-
-dotenv.config({ path: "~/.config/.autocommit/.env" });
+const configPath = join(homedir(), ".config", "autocommit", ".env");
+console.log("configPath", configPath);
+dotenv.config({ path: configPath });
 
 // Parse argv
 const argv = cli({
@@ -71,22 +76,22 @@ const argv = cli({
             if (text) {
               console.log("API key is valid");
 
-              await runCommand("mkdir -p ~/.config/.autocommit");
-              await runCommand("rm -f ~/.config/.autocommit/.env");
-              await runCommand("touch ~/.config/.autocommit/.env");
-              await runCommand("touch ~/.config/.autocommit/.gitignore");
+              await runCommand("mkdir -p ~/.config/autocommit");
+              await runCommand("rm -f ~/.config/autocommit/.env");
+              await runCommand("touch ~/.config/autocommit/.env");
+              await runCommand("touch ~/.config/autocommit/.gitignore");
 
               const apiKey = argv._.key.replace("ANTHROPIC_API_KEY=", "");
               await runCommand(
-                `echo 'ANTHROPIC_API_KEY=${apiKey}' > ~/.config/.autocommit/.env`
+                `echo 'ANTHROPIC_API_KEY=${apiKey}' > ~/.config/autocommit/.env`
               );
 
               await runCommand(
-                `echo '.env\n.env.*' > ~/.config/.autocommit/.gitignore`
+                `echo '.env\n.env.*' > ~/.config/autocommit/.gitignore`
               );
 
               console.log(
-                `API key saved successfully in ~/.config/.autocommit/.env \n
+                `API key saved successfully in ~/.config/autocommit/.env \n
 You can now use the aicommits command to commit your changes.\n
 Run following command to get started: \n
 aicommits commit`
@@ -103,7 +108,7 @@ aicommits commit`
         }
         if (argv._.action === "unset") {
           console.log("Unsetting API key...");
-          await runCommand("rm -f ~/.config/.autocommit/.env");
+          await runCommand("rm -f ~/.config/autocommit/.env");
           console.log("The API key has been deleted!");
         }
       }
@@ -177,7 +182,7 @@ aicommits commit`
 
           console.log("\n\nCommit message generated successfully!\n\n");
           console.log(text);
-          console.log("\n\n");
+          console.log("\n");
 
           // Prompt user to choose whether to commit
           const shouldCommit = await promptUser(

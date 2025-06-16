@@ -2,23 +2,39 @@
   "name": "autocommit",
   "version": "1.0.0",
   "description": "A CLI tool to commit your changes with AI",
-  "main": "index.ts",
+  "main": "dist/index.js",
   "bin": {
-    "autocommit": "./index.ts"
+    "autocommit": "dist/index.js"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "start": "ts-node index.ts --help"
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "start": "node dist/index.js --help",
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^1.2.12",
     "ai": "^4.3.16",
     "cleye": "^1.3.4",
-    "dotenv": "^16.5.0",
+    "dotenv": "^16.5.65",
     "zod": "^3.25.65"
   },
   "devDependencies": {
     "@types/node": "^17.0.0",
     "ts-node": "^10.4.0",
+    "tsup": "^8.0.0",
     "typescript": "^4.5.4"
-  }
+  },
+  "keywords": [
+    "cli",
+    "git",
+    "commit",
+    "ai",
+    "anthropic"
+  ],
+  "author": "frbarbre",
+  "license": "MIT"
 }
