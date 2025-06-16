@@ -163,7 +163,11 @@ const argv = cli({
               `,
           });
 
+          console.log("Commit message generated successfully!");
           console.log(text);
+
+          await runCommand(`git commit -m "${text}"`);
+          console.log("\n\n\nChanges committed successfully!");
         } catch (error) {
           console.error("Error:", error);
           process.exit(1);
