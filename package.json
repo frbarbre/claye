@@ -1,6 +1,11 @@
 {
-  "name": "cleye-demo",
-  "private": true,
+  "name": "autocommit",
+  "version": "1.0.0",
+  "description": "A CLI tool to commit your changes with AI",
+  "main": "index.ts",
+  "bin": {
+    "autocommit": "./index.ts"
+  },
   "scripts": {
     "start": "ts-node index.ts --help"
   },

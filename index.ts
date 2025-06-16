@@ -29,7 +29,7 @@ function isModel(model: Models) {
 // Promisify exec for async/await usage
 const execAsync = promisify(exec);
 
-dotenv.config({ path: "~/.config/.aicommits/.env" });
+dotenv.config({ path: "~/.config/.autocommit/.env" });
 
 // Parse argv
 const argv = cli({
@@ -44,9 +44,9 @@ const argv = cli({
         ],
         help: {
           examples: [
-            "config set ANTHROPIC_API_KEY=<your-api-key>",
-            "config get ANTHROPIC_API_KEY",
-            "config unset ANTHROPIC_API_KEY",
+            "config set ANTHROPIC_API_KEY=<your-api-key> // Set the API key",
+            "config get // Get the API key",
+            "config unset // Delete the API key",
           ],
         },
       },
@@ -71,15 +71,26 @@ const argv = cli({
             if (text) {
               console.log("API key is valid");
 
-              await runCommand("mkdir -p ~/.config/.aicommits");
-              await runCommand("touch ~/.config/.aicommits/.env");
+              await runCommand("mkdir -p ~/.config/.autocommit");
+              await runCommand("rm -f ~/.config/.autocommit/.env");
+              await runCommand("touch ~/.config/.autocommit/.env");
+              await runCommand("touch ~/.config/.autocommit/.gitignore");
 
               const apiKey = argv._.key.replace("ANTHROPIC_API_KEY=", "");
               await runCommand(
-                `echo 'ANTHROPIC_API_KEY=${apiKey}' > ~/.config/.aicommits/.env`
+                `echo 'ANTHROPIC_API_KEY=${apiKey}' > ~/.config/.autocommit/.env`
               );
 
-              console.log("API key saved successfully!");
+              await runCommand(
+                `echo '.env\n.env.*' > ~/.config/.autocommit/.gitignore`
+              );
+
+              console.log(
+                `API key saved successfully in ~/.config/.autocommit/.env \n
+You can now use the aicommits command to commit your changes.\n
+Run following command to get started: \n
+aicommits commit`
+              );
             }
           } catch (error) {
             console.error("Could not validate API key:", error);
@@ -92,8 +103,8 @@ const argv = cli({
         }
         if (argv._.action === "unset") {
           console.log("Unsetting API key...");
-          await runCommand("rm -f ~/.config/.aicommits/.env");
-          console.log("API key unset successfully!");
+          await runCommand("rm -f ~/.config/.autocommit/.env");
+          console.log("The API key has been deleted!");
         }
       }
     ),
