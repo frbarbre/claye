@@ -4,6 +4,7 @@ import { exec } from "child_process";
 import { cli, command } from "cleye";
 import dotenv from "dotenv";
 import { promisify } from "util";
+import * as readline from "readline";
 
 const models = [
   "claude-3-5-haiku-latest",
@@ -163,11 +164,30 @@ const argv = cli({
               `,
           });
 
-          console.log("Commit message generated successfully!");
+          console.log("\n\nCommit message generated successfully!\n\n");
           console.log(text);
+          console.log("\n\n");
 
-          await runCommand(`git commit -m "${text}"`);
-          console.log("\n\n\nChanges committed successfully!");
+          // Prompt user to choose whether to commit
+          const shouldCommit = await promptUser(
+            "\nDo you want to commit with this message? (y/N): "
+          );
+
+          if (
+            shouldCommit.toLowerCase() === "y" ||
+            shouldCommit.toLowerCase() === "yes"
+          ) {
+            try {
+              await runCommand(`git commit -m "${text.replace(/"/g, '\\"')}"`);
+              console.log("\nChanges committed successfully!");
+            } catch (error) {
+              console.error("Failed to commit changes:", error);
+              process.exit(1);
+            }
+          } else {
+            console.log("\nCommit cancelled.");
+            process.exit(0);
+          }
         } catch (error) {
           console.error("Error:", error);
           process.exit(1);
@@ -187,4 +207,19 @@ async function runCommand(
   } catch (error: any) {
     throw new Error(`Command failed: ${error.message}`);
   }
+}
+
+// Helper function to prompt user for input
+function promptUser(question: string): Promise<string> {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+
+  return new Promise((resolve) => {
+    rl.question(question, (answer) => {
+      rl.close();
+      resolve(answer.trim());
+    });
+  });
 }
