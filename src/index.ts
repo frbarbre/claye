@@ -32,7 +32,7 @@ function isModel(model: Models) {
 
 // Promisify exec for async/await usage
 const execAsync = promisify(exec);
-const configPath = join(homedir(), ".config", "autocommit", ".env");
+const configPath = join(homedir(), ".config", "claye", ".env");
 
 dotenv.config({ path: configPath });
 
@@ -76,25 +76,25 @@ const argv = cli({
             if (text) {
               console.log("API key is valid");
 
-              await runCommand("mkdir -p ~/.config/autocommit");
-              await runCommand("rm -f ~/.config/autocommit/.env");
-              await runCommand("touch ~/.config/autocommit/.env");
-              await runCommand("touch ~/.config/autocommit/.gitignore");
+              await runCommand("mkdir -p ~/.config/claye");
+              await runCommand("rm -f ~/.config/claye/.env");
+              await runCommand("touch ~/.config/claye/.env");
+              await runCommand("touch ~/.config/claye/.gitignore");
 
               const apiKey = argv._.key.replace("ANTHROPIC_API_KEY=", "");
               await runCommand(
-                `echo 'ANTHROPIC_API_KEY=${apiKey}' > ~/.config/autocommit/.env`
+                `echo 'ANTHROPIC_API_KEY=${apiKey}' > ~/.config/claye/.env`
               );
 
               await runCommand(
-                `echo '.env\n.env.*' > ~/.config/autocommit/.gitignore`
+                `echo '.env\n.env.*' > ~/.config/claye/.gitignore`
               );
 
               console.log(
-                `API key saved successfully in ~/.config/autocommit/.env \n
-You can now use the aicommits command to commit your changes.\n
+                `API key saved successfully in ~/.config/claye/.env \n
+You can now use the claye command to commit your changes.\n
 Run following command to get started: \n
-aicommits commit`
+claye commit`
               );
             }
           } catch (error) {
@@ -108,7 +108,7 @@ aicommits commit`
         }
         if (argv._.action === "unset") {
           console.log("Unsetting API key...");
-          await runCommand("rm -f ~/.config/autocommit/.env");
+          await runCommand("rm -f ~/.config/claye/.env");
           console.log("The API key has been deleted!");
         }
       }
