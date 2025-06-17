@@ -22,8 +22,8 @@ npm install -g claye
 ### From Source
 
 ```bash
-git clone https://github.com/your-username/cli-ai-commits.git
-cd cli-ai-commits
+git clone https://github.com/frbarbre/claye.git
+cd claye
 npm install
 npm run build
 npm link

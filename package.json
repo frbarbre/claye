@@ -1,6 +1,7 @@
 {
   "name": "claye",
-  "version": "1.0.1",
+  "version": "1.0.2",
+  "repository": "https://github.com/frbarbre/claye",
   "description": "A CLI tool to commit your changes with AI",
   "main": "dist/index.js",
   "bin": {
