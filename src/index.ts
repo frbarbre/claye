@@ -165,15 +165,31 @@ aicommits commit`
                   : ""
               }
               Please format the changes in markdown, and use the following format:
-              # Changes
-              - Change 1
-              - Change 2
-              # Reasoning
-              - Reasoning for change 1
-              - Reasoning for change 2
-              # Summary
-              - Summary of the changes
-              - Summary of the reasoning
+
+              A short one-line summary of the changes.
+              
+              Changes: List of changes made to the codebase.
+              Reasoning: Reasoning for the changes.
+              Summary: Summary of the changes.
+
+              FOLLOW THE FOLLOWING EXAMPLE:
+
+               Refactor commit message generation and formatting
+
+               Changes:
+               - Updated the commit message generation template to use a more concise markdown format
+               - Simplified the template structure with clear sections for Title, Changes, Reasoning, and Summary
+               - Removed nested list formatting and redundant headers
+               
+               Reasoning:
+               - The new format provides a clearer and more structured approach to generating commit messages
+               - Reduces verbosity while maintaining readability
+               - Makes the commit message template more consistent and easier to parse
+               
+               Summary:
+               - Streamlined the commit message generation process
+               - Improved template readability and structure
+               - Maintained the core functionality of generating descriptive commit messages
         
               The changes are:
               ${changes}
