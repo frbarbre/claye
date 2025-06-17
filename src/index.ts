@@ -33,7 +33,7 @@ function isModel(model: Models) {
 // Promisify exec for async/await usage
 const execAsync = promisify(exec);
 const configPath = join(homedir(), ".config", "autocommit", ".env");
-console.log("configPath", configPath);
+
 dotenv.config({ path: configPath });
 
 // Parse argv
